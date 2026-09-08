@@ -1,0 +1,52 @@
+[
+  {
+    "model": "Toyota Camry",
+    "year": 2021,
+    "power": 203
+  },
+  {
+    "model": "BMW X5",
+    "year": 2019,
+    "power": 340
+  },
+  {
+    "model": "Mercedes-Benz E-Class",
+    "year": 2020,
+    "power": 255
+  },
+  {
+    "model": "Audi A6",
+    "year": 2018,
+    "power": 249
+  },
+  {
+    "model": "Volkswagen Passat",
+    "year": 2022,
+    "power": 190
+  },
+  {
+    "model": "Ford Mustang",
+    "year": 2020,
+    "power": 450
+  },
+  {
+    "model": "Chevrolet Corvette",
+    "year": 2019,
+    "power": 490
+  },
+  {
+    "model": "Hyundai Sonata",
+    "year": 2021,
+    "power": 180
+  },
+  {
+    "model": "Nissan Leaf",
+    "year": 2020,
+    "power": 147
+  },
+  {
+    "model": "Tesla Model S",
+    "year": 2022,
+    "power": 670
+  }
+]

@@ -26,20 +26,17 @@ public class ConsoleIO {
         switch (option) {
             case 1 -> {
                 System.out.println("Генерация случайных данных...");
-//                array = RandomFiller.fill(length);
             }
             case 2 -> {
                 System.out.println("Ручной ввод данных:");
-//                array = ManualFiller.fill(length, scanner);
+
             }
             case 3 -> {
                 System.out.print("Введите путь к файлу (например data.txt): ");
-//                String filePath = scanner.nextLine();
-//                array = FileFiller.fill(filePath);
+
             }
             default -> {
                 System.out.println("Неверный выбор");
-                //return;
             }
         }
     }
