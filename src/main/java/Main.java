@@ -1,5 +1,6 @@
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -77,13 +78,14 @@ class Main {
                             //TODO: валидировать
                             String filePath = scanner.nextLine();
 
-                            ArrayList<Car> cars = new ArrayList<>();
+                            List<Car> cars = new ArrayList<>();
 
                             CarParser.read(Paths.get(filePath), cars, true);
+                            System.out.println(cars);
                         }
                     }
-
-                    ArrayList<Car> carList = new ArrayList<>();
+//src/data.json
+                    List<Car> carList = new ArrayList<>();
 
                     Sorter.sort(carList);
 
