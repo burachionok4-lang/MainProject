@@ -2,7 +2,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.ArrayList;
 
 import Car.*;
 import IO.*;
@@ -50,15 +49,15 @@ class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        List<Car> cars = new ArrayList<>();     //Общий список на все виды ввода
         while (true) {
             ConsoleIO.printMainMenu();
 
             //TODO: валидировать, мб заменить на метод
             int mainChoice = scanner.nextInt();
             scanner.nextLine();
-
             switch (mainChoice) {
-                case 1:
+                case 1 -> {
                     ConsoleIO.printFillOptions();
 
                     //TODO: валидировать, мб заменить на метод
@@ -66,36 +65,45 @@ class Main {
                     scanner.nextLine();
 
                     ConsoleIO.printFillSelection(fillChoice);
-
                     switch (fillChoice) {
                         case 1 -> {
 
                         }
                         case 2 -> {
+                            System.out.println("Введите количество машин:");
+                            int count = scanner.nextInt();
+                            scanner.nextLine();
+                            CarInput.write(count,cars,false);
+
+
 
                         }
                         case 3 -> {
-                            //TODO: валидировать
+                            //TODO: заглянуть в билдер и продумать валидацию получше
                             String filePath = scanner.nextLine();
-
-                            List<Car> cars = new ArrayList<>();
-
-                            CarParser.read(Paths.get(filePath), cars, true);
-                            System.out.println(cars);
+                            CarParser.read(Paths.get(filePath), cars, false);
                         }
                     }
+
 //src/data.json
+                    if (!cars.isEmpty()) {
+                        System.out.println("\nВведённые машины:");
+                        cars.forEach(System.out::println);
+                    } else {
+                        System.out.println("Список пуст.");
+                    }
                     List<Car> carList = new ArrayList<>();
 
                     Sorter.sort(carList);
-
-                case 2: {
+                }
+                case 2 -> {
                     ConsoleIO.printExit();
                     scanner.close();
                     return;
                 }
-                default:
+                default ->
                     System.out.println("Ошибка: введите 1 или 2.");
+
             }
         }
     }
