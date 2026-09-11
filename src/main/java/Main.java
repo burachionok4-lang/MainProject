@@ -11,6 +11,7 @@ class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        List<Car> cars = new ArrayList<>();     //Общий список на все виды ввода
         while (true) {
             ConsoleIO.printMainMenu();
 
