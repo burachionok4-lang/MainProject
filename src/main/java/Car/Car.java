@@ -3,6 +3,7 @@ package Car;
 import java.util.Objects;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 @JsonDeserialize(builder = Car.Builder.class)
 public class Car {
 
@@ -18,12 +19,9 @@ public class Car {
     public double getPower() {
         return power;
     }
-
     public String getModel() {
         return model;
     }
-
-
     public int getYear() {
         return year;
     }
@@ -50,17 +48,21 @@ public class Car {
                 model, power, year);
 
     }
+
     @JsonPOJOBuilder(withPrefix = "set")
     public static class Builder {
         private double power;
         private String model;
         private int year;
+
         // В СЕТАХ ЛЮБЫЕ ПРОВЕРКИ и null
         public Builder setModel(String model) {
             if (model == null || model.trim().isEmpty()) {
                 throw new IllegalArgumentException("Модель не может быть пустой");
             }
+
             this.model = model;
+
             return this;
         }
 
@@ -68,7 +70,9 @@ public class Car {
             if (year < 2000) {
                 throw new IllegalArgumentException("Год должен быть >= 2000");
             }
+
             this.year = year;
+
             return this;
         }
 
@@ -76,19 +80,25 @@ public class Car {
             if (power <= 0) {
                 throw new IllegalArgumentException("Мощность должна быть положительной");
             }
+
             this.power = power;
+
             return this;
         }
+
         public Car build() {
-            if (model == null) {
+            if (model == null || model.trim().isEmpty()) {
                 throw new IllegalStateException("Модель не задана");
             }
+
             if (year == 0) {
                 throw new IllegalStateException("Год не задан");
             }
+
             if (power == 0) {
                 throw new IllegalStateException("Мощность не задана");
             }
+
             return new Car(this);
         }
     }

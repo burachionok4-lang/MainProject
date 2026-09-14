@@ -7,9 +7,13 @@ import java.util.List;
 
 public class Sorter {
 
+    public static class Strategy {
+
+    }
+
     private Sorter() {};
 
-    public static void sort(List<Car> list) {
+    public static void sort(List<Car> list, Strategy strategy) {
 
     }
 }
