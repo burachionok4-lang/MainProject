@@ -1,14 +1,29 @@
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import Car.*;
+import static Car.Car.of;
 import IO.*;
 import Sorter.*;
+import Test.CarParserTest;
 
 class Main {
     public static void main(String[] args) {
+
+        final boolean TEST_MODE = true;
+
+        if(TEST_MODE)
+        {
+            System.out.println("Режим тестирования");
+
+            IO.println("writeReadJSON: " + CarParserTest.writeReadJSON());
+
+            return;
+        }
+
         Scanner scanner = new Scanner(System.in);
 
         List<Car> cars = new ArrayList<>();     //Общий список на все виды ввода
@@ -52,7 +67,6 @@ class Main {
                                 CarParser.readFromConsole(count, filledCars, false);
                             }
                             case FROM_FILE -> {
-                                //TODO: заглянуть в билдер и продумать валидацию получше
                                 String filePath = scanner.nextLine();
 
                                 CarParser.readJSON(Paths.get(filePath), filledCars, false);
@@ -64,17 +78,17 @@ class Main {
                             continue;
                         }
 
-
                         ConsoleIO.printCarList(filledCars, ConsoleIO.DEFAULT_PRINT_LIST_LIMIT);
+
                         break;
                     }
 
                     ConsoleIO.printSortingOptions();
 
                     //TODO
-                    //Sorter.sort(filledCars, strategy);
+                    //CarSorter.sort(filledCars, strategy);
 
-
+                    scanner.nextLine();
                 }
                 case EXIT -> {
                     ConsoleIO.printExit();

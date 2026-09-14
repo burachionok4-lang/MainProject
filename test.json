@@ -1,0 +1,17 @@
+[ {
+  "power" : 100.0,
+  "model" : "A",
+  "year" : 1986
+}, {
+  "power" : 150.1,
+  "model" : "Car Says Meow",
+  "year" : 2001
+}, {
+  "power" : 125.5,
+  "model" : "Toyota Corolla",
+  "year" : 2001
+}, {
+  "power" : 999.0,
+  "model" : "Car Has Long Name",
+  "year" : 2052
+} ]
