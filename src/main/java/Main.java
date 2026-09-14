@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import Car.*;
+import Collection.CustomArrayList;
 import IO.*;
 import Sorter.*;
 
@@ -11,8 +12,8 @@ class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        List<Car> cars = new ArrayList<>();     //Общий список на все виды ввода
         while (true) {
+            List<Car> filledCars = new CustomArrayList<Car>();
             ConsoleIO.printMainMenu();
 
             //TODO: валидировать, мб заменить на метод
@@ -23,11 +24,10 @@ class Main {
 
             switch (mainSelectionOption) {
                 case FILL_AND_SORT -> {
-                    ConsoleIO.printFillOptions();
 
-                    List<Car> filledCars = new ArrayList<>();
 
                     while (true) {
+                        ConsoleIO.printFillOptions();
                         //TODO: валидировать, мб заменить на метод
                         int fillSelectionInt = scanner.nextInt();
                         scanner.nextLine();
@@ -52,27 +52,38 @@ class Main {
                                 CarParser.readFromConsole(count, filledCars, false);
                             }
                             case FROM_FILE -> {
-                                //TODO: заглянуть в билдер и продумать валидацию получше
                                 String filePath = scanner.nextLine();
 
                                 CarParser.readJSON(Paths.get(filePath), filledCars, false);
                             }
                         }
 
-                        if (filledCars.isEmpty()) {
-                            System.out.println("Список пуст.");
-                            continue;
+                        if (!filledCars.isEmpty()) {
+                            ConsoleIO.printCarList(filledCars, ConsoleIO.DEFAULT_PRINT_LIST_LIMIT);
+                            break;
+                        } else {
+                            System.out.println("Список пуст, попробуйте снова.");
                         }
 
-
-                        ConsoleIO.printCarList(filledCars, ConsoleIO.DEFAULT_PRINT_LIST_LIMIT);
-                        break;
                     }
 
                     ConsoleIO.printSortingOptions();
+                    int sortChoice = scanner.nextInt();
+                    scanner.nextLine();
 
-                    //TODO
-                    //Sorter.sort(filledCars, strategy);
+                    SortSelectionOption sortOption = SortSelectionOption.fromInt(sortChoice);
+                    SortCarStrategy strategy = switch (sortOption) {
+                        case BY_MODEL -> new SortByModel();
+                        case BY_POWER -> new SortByPower();
+                        case BY_YEAR  -> new SortByYear();
+                        case BY_ALL   -> new SortByAll();
+                    };
+
+                    CarSorter sorter = new CarSorter(strategy);
+                    sorter.sortCars(filledCars);
+
+                    System.out.println("\nОтсортированный список:");
+                    ConsoleIO.printCarList(filledCars, ConsoleIO.DEFAULT_PRINT_LIST_LIMIT);
 
 
                 }
