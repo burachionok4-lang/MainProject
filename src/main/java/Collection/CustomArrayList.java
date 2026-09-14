@@ -1,20 +1,22 @@
 package Collection;
 
+import java.util.AbstractList;
 import java.util.Arrays;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.util.RandomAccess;
 
-public class CustomArrayList<T> implements Iterable<T> {
+public class CustomArrayList<T> extends AbstractList<T>
+        implements List<T>, RandomAccess {
 
     private static final int DEFAULT_CAPACITY = 10;
 
     private Object[] elements;
     private int size;
+    private int modCount;
 
     public CustomArrayList() {
         this(DEFAULT_CAPACITY);
@@ -22,108 +24,149 @@ public class CustomArrayList<T> implements Iterable<T> {
 
     public CustomArrayList(int initialCapacity) {
         if (initialCapacity < 0) {
-            throw new IllegalArgumentException("Начальная ёмкость не может быть отрицательной: " + initialCapacity);
+            throw new IllegalArgumentException(
+                    "Начальная ёмкость не может быть отрицательной: " + initialCapacity);
         }
         this.elements = new Object[initialCapacity];
         this.size = 0;
+        this.modCount = 0;
     }
 
-    public void add(T item) {
-        ensureCapacity(size + 1);
-        elements[size] = item;
-        size++;
+    public CustomArrayList(java.util.Collection<? extends T> c) {
+        this(c.size());
+        addAll(c);
     }
 
-    public void add(int index, T item) {
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public T get(int index) {
+        checkIndex(index);
+        return (T) elements[index];
+    }
+
+    @Override
+    public T set(int index, T element) {
+        checkIndex(index);
+        @SuppressWarnings("unchecked")
+        T old = (T) elements[index];
+        elements[index] = element;
+        return old;
+    }
+
+    @Override
+    public void add(int index, T element) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Индекс " + index + " вне диапазона вставки [0, " + size + "]");
+            throw new IndexOutOfBoundsException(
+                    "Индекс " + index + " вне диапазона вставки [0, " + size + "]");
         }
         ensureCapacity(size + 1);
         System.arraycopy(elements, index, elements, index + 1, size - index);
-        elements[index] = item;
+        elements[index] = element;
         size++;
+        modCount++;
     }
 
-    public T get(int index) {
-        checkIndex(index);
-        return elementAt(index);
-    }
-
-    public T set(int index, T item) {
-        checkIndex(index);
-        T previous = elementAt(index);
-        elements[index] = item;
-        return previous;
-    }
-
+    @Override
+    @SuppressWarnings("unchecked")
     public T remove(int index) {
         checkIndex(index);
-        T removed = elementAt(index);
-        System.arraycopy(elements, index + 1, elements, index, size - index - 1);
-        elements[size - 1] = null;
-        size--;
+        T removed = (T) elements[index];
+        int moved = size - index - 1;
+        if (moved > 0) {
+            System.arraycopy(elements, index + 1, elements, index, moved);
+        }
+        elements[--size] = null; // help GC
+        modCount++;
         return removed;
     }
 
-    public boolean remove(T item) {
-        int index = indexOf(item);
-        if (index < 0) {
-            return false;
-        }
-        remove(index);
+    @Override
+    public boolean add(T element) {
+        ensureCapacity(size + 1);
+        elements[size++] = element;
+        modCount++;
         return true;
     }
 
-    public int indexOf(T item) {
+    @Override
+    public void clear() {
+        Arrays.fill(elements, 0, size, null);
+        size = 0;
+        modCount++;
+    }
+
+    @Override
+    public int indexOf(Object o) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(elements[i], item)) {
+            if (Objects.equals(elements[i], o)) {
                 return i;
             }
         }
         return -1;
     }
 
-    public boolean contains(T item) {
-        return indexOf(item) >= 0;
+    @Override
+    public boolean contains(Object o) {
+        return indexOf(o) >= 0;
     }
 
-    public int size() {
-        return size;
-    }
-
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
-    public void clear() {
-        Arrays.fill(elements, 0, size, null);
-        size = 0;
-    }
-
-    public Stream<T> stream() {
-        return StreamSupport.stream(spliterator(), false);
-    }
-
     @Override
     public Iterator<T> iterator() {
-        return new CustomIterator();
+        return new Itr();
     }
 
-    @Override
-    public Spliterator<T> spliterator() {
-        return Spliterators.spliterator(elements, 0, size, Spliterator.ORDERED);
-    }
+    private class Itr implements Iterator<T> {
+        private int cursor;
+        private int lastRet = -1;
+        private int expectedModCount = modCount;
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder("[");
-        for (int i = 0; i < size; i++) {
-            if (i > 0) {
-                builder.append(", ");
-            }
-            builder.append(elements[i]);
+        @Override
+        public boolean hasNext() {
+            return cursor < size;
         }
-        return builder.append("]").toString();
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public T next() {
+            checkForComodification();
+            if (cursor >= size) {
+                throw new NoSuchElementException("Элементы коллекции закончились");
+            }
+            lastRet = cursor;
+            return (T) elements[cursor++];
+        }
+
+        @Override
+        public void remove() {
+            if (lastRet < 0) {
+                throw new IllegalStateException("Метод next() ещё не вызывался");
+            }
+            checkForComodification();
+            try {
+                CustomArrayList.this.remove(lastRet);
+                cursor = lastRet;
+                lastRet = -1;
+                expectedModCount = modCount;
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
+        }
+
+        private void checkForComodification() {
+            if (modCount != expectedModCount) {
+                throw new ConcurrentModificationException();
+            }
+        }
     }
 
     private void ensureCapacity(int required) {
@@ -139,30 +182,8 @@ public class CustomArrayList<T> implements Iterable<T> {
 
     private void checkIndex(int index) {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Индекс " + index + " вне диапазона [0, " + (size - 1) + "]");
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private T elementAt(int index) {
-        return (T) elements[index];
-    }
-
-    private class CustomIterator implements Iterator<T> {
-
-        private int cursor;
-
-        @Override
-        public boolean hasNext() {
-            return cursor < size;
-        }
-
-        @Override
-        public T next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException("Элементы коллекции закончились");
-            }
-            return elementAt(cursor++);
+            throw new IndexOutOfBoundsException(
+                    "Индекс " + index + " вне диапазона [0, " + (size - 1) + "]");
         }
     }
 }

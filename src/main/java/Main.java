@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import Car.*;
 import static Car.Car.of;
+import Collection.CustomArrayList;
 import IO.*;
 import Sorter.*;
 import Test.CarParserTest;
@@ -26,8 +27,8 @@ class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        List<Car> cars = new ArrayList<>();     //Общий список на все виды ввода
         while (true) {
+            List<Car> filledCars = new CustomArrayList<Car>();
             ConsoleIO.printMainMenu();
 
             //TODO: валидировать, мб заменить на метод
@@ -38,11 +39,10 @@ class Main {
 
             switch (mainSelectionOption) {
                 case FILL_AND_SORT -> {
-                    ConsoleIO.printFillOptions();
 
-                    List<Car> filledCars = new ArrayList<>();
 
                     while (true) {
+                        ConsoleIO.printFillOptions();
                         //TODO: валидировать, мб заменить на метод
                         int fillSelectionInt = scanner.nextInt();
                         scanner.nextLine();
@@ -73,9 +73,11 @@ class Main {
                             }
                         }
 
-                        if (filledCars.isEmpty()) {
-                            System.out.println("Список пуст.");
-                            continue;
+                        if (!filledCars.isEmpty()) {
+                            ConsoleIO.printCarList(filledCars, ConsoleIO.DEFAULT_PRINT_LIST_LIMIT);
+                            break;
+                        } else {
+                            System.out.println("Список пуст, попробуйте снова.");
                         }
 
                         ConsoleIO.printCarList(filledCars, ConsoleIO.DEFAULT_PRINT_LIST_LIMIT);
@@ -84,9 +86,24 @@ class Main {
                     }
 
                     ConsoleIO.printSortingOptions();
+                  
+                    int sortChoice = scanner.nextInt();
+                    scanner.nextLine();
 
-                    //TODO
-                    //CarSorter.sort(filledCars, strategy);
+                    SortSelectionOption sortOption = SortSelectionOption.fromInt(sortChoice);
+                    SortCarStrategy strategy = switch (sortOption) {
+                        case BY_MODEL -> new SortByModel();
+                        case BY_POWER -> new SortByPower();
+                        case BY_YEAR  -> new SortByYear();
+                        case BY_ALL   -> new SortByAll();
+                    };
+
+                    CarSorter sorter = new CarSorter(strategy);
+                    sorter.sortCars(filledCars);
+
+                    System.out.println("\nОтсортированный список:");
+                    ConsoleIO.printCarList(filledCars, ConsoleIO.DEFAULT_PRINT_LIST_LIMIT);
+
 
                     scanner.nextLine();
                 }

@@ -68,7 +68,6 @@ public class ConsoleIO {
             System.out.println("и еще " + (carList.size() - 1 - limit) + " элементов...");
         }
     }
-
     public static void printSortingOptions() {
         System.out.println("\n--- Сортировка ---");
 
@@ -76,8 +75,8 @@ public class ConsoleIO {
         System.out.println("2. Модель");
         System.out.println("3. Год");
         System.out.println("4. По всем полям");
+        System.out.print("Ваш выбор: ");
     }
-
     public static void randomFill()
     {
         System.out.print("\nВведите количество: ");
