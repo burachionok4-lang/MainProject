@@ -8,6 +8,8 @@ import java.util.Scanner;
 public class ConsoleIO {
     static public final int DEFAULT_PRINT_LIST_LIMIT = 10;
 
+    static public int printListLimit = DEFAULT_PRINT_LIST_LIMIT;
+
     private static Scanner scanner = new Scanner(System.in);
 
     public static void printMainMenu() {
@@ -54,7 +56,7 @@ public class ConsoleIO {
 
     //@param limit how many to print, 0 is unlimited
     public static void printCarList(List<Car> carList, int limit) {
-        System.out.println("\nСписок машин:");
+        //System.out.println("\nСписок машин:");
 
         var stream = carList.stream();
 
@@ -64,19 +66,20 @@ public class ConsoleIO {
 
         stream.forEach(System.out::println);
 
-        if (carList.size() > limit) {
+        if (carList.size() - 1 > limit) {
             System.out.println("и еще " + (carList.size() - 1 - limit) + " элементов...");
         }
     }
+
     public static void printSortingOptions() {
         System.out.println("\n--- Сортировка ---");
-
-        System.out.println("1. Мощность");
-        System.out.println("2. Модель");
+        System.out.println("1. Модель");
+        System.out.println("2. Мощность");
         System.out.println("3. Год");
         System.out.println("4. По всем полям");
         System.out.print("Ваш выбор: ");
     }
+
     public static void randomFill()
     {
         System.out.print("\nВведите количество: ");

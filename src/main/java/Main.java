@@ -14,7 +14,7 @@ import Test.CarParserTest;
 class Main {
     public static void main(String[] args) {
 
-        final boolean TEST_MODE = true;
+        final boolean TEST_MODE = false;
 
         if(TEST_MODE)
         {
@@ -39,7 +39,6 @@ class Main {
 
             switch (mainSelectionOption) {
                 case FILL_AND_SORT -> {
-
 
                     while (true) {
                         ConsoleIO.printFillOptions();
@@ -91,21 +90,19 @@ class Main {
                     scanner.nextLine();
 
                     SortSelectionOption sortOption = SortSelectionOption.fromInt(sortChoice);
-                    SortCarStrategy strategy = switch (sortOption) {
-                        case BY_MODEL -> new SortByModel();
-                        case BY_POWER -> new SortByPower();
-                        case BY_YEAR  -> new SortByYear();
-                        case BY_ALL   -> new SortByAll();
-                    };
 
-                    CarSorter sorter = new CarSorter(strategy);
-                    sorter.sortCars(filledCars);
+                    switch (sortOption) {
+                        case BY_MODEL -> CarSorter.sort(filledCars, new CarSorter.SortByField<>(Car::getModel));
+                        case BY_POWER -> CarSorter.sort(filledCars, new CarSorter.SortByField<>(Car::getPower));
+                        case BY_YEAR -> CarSorter.sort(filledCars, new CarSorter.SortByField<>(Car::getYear));
+                        case BY_ALL -> CarSorter.sort(filledCars, new CarSorter.SortByAllFields());
+                    };
 
                     System.out.println("\nОтсортированный список:");
                     ConsoleIO.printCarList(filledCars, ConsoleIO.DEFAULT_PRINT_LIST_LIMIT);
 
 
-                    scanner.nextLine();
+                    //scanner.nextLine();
                 }
                 case EXIT -> {
                     ConsoleIO.printExit();

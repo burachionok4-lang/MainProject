@@ -6,27 +6,27 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonDeserialize(builder = Car.Builder.class)
 public class Car {
-
-    private final double power;
     private final String model;
+    private final double power;
     private final int year;
 
     public Car(Builder builder) {
         this.power = builder.power;
         this.model = builder.model;
+        this.power = builder.power;
         this.year = builder.year;
-    }
-    public double getPower() {
-        return power;
     }
     public String getModel() {
         return model;
+    }
+    public double getPower() {
+        return power;
     }
     public int getYear() {
         return year;
     }
 
-    public static Car of(double power, String model, int year) {
+    public static Car of(String model, double power, int year) {
         return new Car.Builder()
                 .setModel(model)
                 .setPower(power)
@@ -54,7 +54,6 @@ public class Car {
     public String toString() {
         return String.format("Car{model='%s', power=%s, year=%d}",
                 model, power, year);
-
     }
 
     @JsonPOJOBuilder(withPrefix = "set")
@@ -64,6 +63,7 @@ public class Car {
         private static final double MIN_POWER = 1.0;
         private static final double MAX_POWER = 2000.0;
         private static final int MAX_MODEL_LENGTH = 100;
+
         private double power;
         private String model;
         private int year;
