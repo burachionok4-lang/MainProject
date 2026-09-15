@@ -11,6 +11,7 @@ public class Car {
     private final int year;
 
     public Car(Builder builder) {
+        this.power = builder.power;
         this.model = builder.model;
         this.power = builder.power;
         this.year = builder.year;
