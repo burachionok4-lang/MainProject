@@ -17,10 +17,20 @@ public class CarParserTest {
         Path path = Paths.get("test.json");
 
         List<Car> writeCarList = List.of(
-                of(100, "A", 1986),
-                of(150.1, "Car Says Meow", 2001),
-                of(125.5, "Toyota Corolla", 2001),
-                of(999.0, "Car Has Long Name", 2052));
+                of("A", 100, 1986),
+                of("Car Says Meow",150.1,2001),
+                of("Car That is 3rd",333.3,  2003),
+                of("Car That is 4th",444.4,  2004),
+                of("Toyota Corolla",125.5,  2002),
+                of("Ford Focus",125.5,  1981),
+                of("Ford Escort",133.0,  1980),
+                of("Ford Escort Mk2", 145.0, 1980),
+                of("Lada Largus",122.0,  1999),
+                of("Volvo XC90",149.0,  2015),
+                of("Lada Kalina",98.0,  2004),
+                of("Honda Accord", 110.0, 2001),
+                of("Lada Vesta",99.0,  2015),
+                of("Car Has Very Very Long Name",999.0,  2025));
 
 
         CarParser.writeJSON(path, writeCarList);
