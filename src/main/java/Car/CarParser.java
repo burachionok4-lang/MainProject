@@ -2,28 +2,31 @@ package Car;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class CarParser {
-    public static void writeJSON(Path pathDestination, List<Car> fromList, boolean clearDest) {
+    public static void writeJSON(Path pathDestination, List<Car> fromList) {
+        ObjectMapper mapper = new ObjectMapper();
 
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        try {
+            mapper.writeValue(pathDestination.toFile(), fromList);
+        } catch (IOException e) {
+            throw new RuntimeException("Couldn't write JSON to " + pathDestination.toString() + "\n" + e.getMessage(), e);
+        }
     }
 
     public static void readJSON(Path pathFrom, List<Car> dest, boolean clearDest) {
         try {
             ObjectMapper mapper = new ObjectMapper();
 
-            List<Car> loaded = mapper.readValue(
-                    pathFrom.toFile(),
-                    new TypeReference<List<Car>>() {}
-            );
-
+            List<Car> loaded = mapper.readValue(pathFrom.toFile(), new TypeReference<List<Car>>() {});
 
             if (clearDest) {
                 dest.clear();
@@ -42,6 +45,7 @@ public class CarParser {
         if (clearDest) {
             dest.clear();
         }
+
         for (int i = 0; i < count; i++) {
             System.out.println("\n--- Машина №" + (i + 1) + " ---");
             String model;
@@ -95,3 +99,4 @@ public class CarParser {
     }
 
 }
+

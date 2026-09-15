@@ -12,9 +12,9 @@ public class Car {
     private final int year;
 
     public Car(Builder builder) {
+        this.power = builder.power;
         this.model = builder.model;
         this.year = builder.year;
-        this.power = builder.power;
     }
     public double getPower() {
         return power;
@@ -24,6 +24,14 @@ public class Car {
     }
     public int getYear() {
         return year;
+    }
+
+    public static Car of(double power, String model, int year) {
+        return new Car.Builder()
+                .setModel(model)
+                .setPower(power)
+                .setYear(year)
+                .build();
     }
 
     @Override

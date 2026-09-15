@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleIO {
-    static public final int DEFAULT_PRINT_LIST_LIMIT = 10;;
+    static public final int DEFAULT_PRINT_LIST_LIMIT = 10;
+
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void printMainMenu() {
         System.out.println("=========================================\n" +
@@ -24,7 +26,7 @@ public class ConsoleIO {
 
         System.out.println("1. Случайная генерация (рандом)");
         System.out.println("2. Ручной ввод с клавиатуры");
-        System.out.println("3. Загрузка из файла");
+        System.out.println("3. Загрузка из .json файла");
 
         System.out.print("Ваш выбор: ");
     }
@@ -42,7 +44,7 @@ public class ConsoleIO {
                 System.out.println("Ручной ввод данных:");
             }
             case FROM_FILE -> {
-                System.out.print("Введите путь к файлу (например data.txt): ");
+                System.out.print("Введите путь к файлу (напр. test.json): ");
             }
             default -> {
                 System.out.println("Неверный выбор");
@@ -67,10 +69,11 @@ public class ConsoleIO {
         }
     }
     public static void printSortingOptions() {
-        System.out.println("\n--- Выберите поле для сортировки ---");
-        System.out.println("1. По модели");
-        System.out.println("2. По мощности");
-        System.out.println("3. По году");
+        System.out.println("\n--- Сортировка ---");
+
+        System.out.println("1. Мощность");
+        System.out.println("2. Модель");
+        System.out.println("3. Год");
         System.out.println("4. По всем полям");
         System.out.print("Ваш выбор: ");
     }
@@ -85,4 +88,21 @@ public class ConsoleIO {
         //TODO
     }
 
+    public static void waitAnyInput()
+    {
+        scanner.nextLine();
+    }
+
+    public static void scanNextInt()
+    {
+        int mainSelectionInt = scanner.nextInt();
+
+
+        scanner.nextLine();
+    }
+
+//    private static void checkIntInput()
+//    {
+//
+//    }
 }

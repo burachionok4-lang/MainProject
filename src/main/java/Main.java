@@ -1,15 +1,30 @@
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import Car.*;
+import static Car.Car.of;
 import Collection.CustomArrayList;
 import IO.*;
 import Sorter.*;
+import Test.CarParserTest;
 
 class Main {
     public static void main(String[] args) {
+
+        final boolean TEST_MODE = true;
+
+        if(TEST_MODE)
+        {
+            System.out.println("Режим тестирования");
+
+            IO.println("writeReadJSON: " + CarParserTest.writeReadJSON());
+
+            return;
+        }
+
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -65,9 +80,13 @@ class Main {
                             System.out.println("Список пуст, попробуйте снова.");
                         }
 
+                        ConsoleIO.printCarList(filledCars, ConsoleIO.DEFAULT_PRINT_LIST_LIMIT);
+
+                        break;
                     }
 
                     ConsoleIO.printSortingOptions();
+                  
                     int sortChoice = scanner.nextInt();
                     scanner.nextLine();
 
@@ -86,6 +105,7 @@ class Main {
                     ConsoleIO.printCarList(filledCars, ConsoleIO.DEFAULT_PRINT_LIST_LIMIT);
 
 
+                    scanner.nextLine();
                 }
                 case EXIT -> {
                     ConsoleIO.printExit();
