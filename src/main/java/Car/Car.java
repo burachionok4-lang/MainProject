@@ -98,7 +98,7 @@ public class Car {
                 throw new IllegalArgumentException(
                         "Мощность должна быть в диапазоне [" + MIN_POWER + ", " + MAX_POWER + "], получено: " + power);
             }
-            this.power = Math.round(power * 100.0) / 100.0;
+            this.power = Math.round(power * 100.0) / 10.0;
             return this;
         }
 
