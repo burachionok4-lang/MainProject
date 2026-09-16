@@ -20,7 +20,7 @@ class Main {
         {
             System.out.println("Режим тестирования");
 
-            IO.println("writeReadJSON: " + CarParserTest.writeReadJSON());
+            System.out.println("writeReadJSON: " + CarParserTest.writeReadJSON());
 
             return;
         }
@@ -31,9 +31,7 @@ class Main {
             List<Car> filledCars = new CustomArrayList<Car>();
             ConsoleIO.printMainMenu();
 
-            //TODO: валидировать, мб заменить на метод
-            int mainSelectionInt = scanner.nextInt();
-            scanner.nextLine();
+            int mainSelectionInt = ConsoleIO.checkIntInput(scanner, 1, 2);
 
             MainSelectionOption mainSelectionOption = MainSelectionOption.fromInt(mainSelectionInt);
 
@@ -42,26 +40,23 @@ class Main {
 
                     while (true) {
                         ConsoleIO.printFillOptions();
-                        //TODO: валидировать, мб заменить на метод
-                        int fillSelectionInt = scanner.nextInt();
-                        scanner.nextLine();
-
+                        int fillSelectionInt = ConsoleIO.checkIntInput(scanner, 1, 3);
                         FillSelectionOption fillSelectionOption = FillSelectionOption.fromInt(fillSelectionInt);
 
                         ConsoleIO.printFillSelection(fillSelectionOption);
 
                         switch (fillSelectionOption) {
                             case RANDOM -> {
-                                //TODO
-                                ConsoleIO.randomFill();
+                                System.out.print("\nВведите количество машин: ");
+
+                                int count = ConsoleIO.checkIntInput(scanner, 0, 10);
+
+                                RandomCarGenerator.fill(filledCars, count, false);
                             }
                             case MANUAL_INPUT -> {
-                                //TODO
+                                System.out.println("\nВведите количество машин:");
 
-                                System.out.println("Введите количество машин:");
-
-                                int count = scanner.nextInt();
-                                scanner.nextLine();
+                                int count = ConsoleIO.checkIntInput(scanner, 0, 10);
 
                                 CarParser.readFromConsole(count, filledCars, false);
                             }
@@ -85,9 +80,8 @@ class Main {
                     }
 
                     ConsoleIO.printSortingOptions();
-                  
-                    int sortChoice = scanner.nextInt();
-                    scanner.nextLine();
+
+                    int sortChoice = ConsoleIO.checkIntInput(scanner, 1, 4);
 
                     SortSelectionOption sortOption = SortSelectionOption.fromInt(sortChoice);
 

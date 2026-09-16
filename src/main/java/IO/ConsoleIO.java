@@ -1,7 +1,6 @@
 package IO;
 
 import Car.Car;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -56,7 +55,6 @@ public class ConsoleIO {
 
     //@param limit how many to print, 0 is unlimited
     public static void printCarList(List<Car> carList, int limit) {
-        //System.out.println("\nСписок машин:");
 
         var stream = carList.stream();
 
@@ -80,16 +78,6 @@ public class ConsoleIO {
         System.out.print("Ваш выбор: ");
     }
 
-    public static void randomFill()
-    {
-        System.out.print("\nВведите количество: ");
-
-        Scanner scanner = new Scanner(System.in);
-
-        int amount = scanner.nextInt();
-
-        //TODO
-    }
 
     public static void waitAnyInput()
     {
@@ -104,8 +92,20 @@ public class ConsoleIO {
         scanner.nextLine();
     }
 
-//    private static void checkIntInput()
-//    {
-//
-//    }
+    public static int checkIntInput(Scanner scanner, int min, int max)
+   {
+       while (true) {
+           String line = scanner.nextLine().trim();
+           try {
+               int value = Integer.parseInt(line);
+               if (value < min || value > max) {
+                   System.out.printf("Ошибка: число должно быть в диапазоне [%d, %d].%n", min, max);
+                   continue;
+               }
+               return value;
+           } catch (NumberFormatException e) {
+               System.out.println("Ошибка: введите целое число.");
+           }
+       }
+   }
 }

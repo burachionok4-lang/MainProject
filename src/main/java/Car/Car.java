@@ -6,12 +6,16 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonDeserialize(builder = Car.Builder.class)
 public class Car {
+    public static final int MIN_YEAR = 1886;
+    public static final int MAX_YEAR = java.time.Year.now().getValue() + 1;
+    public static final double MIN_POWER = 1.0;
+    public static final double MAX_POWER = 2000.0;
+    public static final int MAX_MODEL_LENGTH = 100;
     private final String model;
     private final double power;
     private final int year;
 
     public Car(Builder builder) {
-        this.power = builder.power;
         this.model = builder.model;
         this.power = builder.power;
         this.year = builder.year;
@@ -58,12 +62,6 @@ public class Car {
 
     @JsonPOJOBuilder(withPrefix = "set")
     public static class Builder {
-        private static final int MIN_YEAR = 1886;
-        private static final int MAX_YEAR = java.time.Year.now().getValue() + 1;
-        private static final double MIN_POWER = 1.0;
-        private static final double MAX_POWER = 2000.0;
-        private static final int MAX_MODEL_LENGTH = 100;
-
         private double power;
         private String model;
         private int year;
@@ -115,5 +113,6 @@ public class Car {
             }
             return new Car(this);
         }
+
     }
 }
