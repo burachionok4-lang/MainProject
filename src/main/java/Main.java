@@ -27,20 +27,23 @@ class Main {
 
         Scanner scanner = new Scanner(System.in);
 
+        List<Car> filledCars = new CustomArrayList<Car>();
+
         while (true) {
-            List<Car> filledCars = new CustomArrayList<Car>();
+
             ConsoleIO.printMainMenu();
 
-            int mainSelectionInt = ConsoleIO.checkIntInput(scanner, 1, 2);
+            int mainSelectionInt = ConsoleIO.checkedIntInput(scanner, 1, 3);
 
             MainSelectionOption mainSelectionOption = MainSelectionOption.fromInt(mainSelectionInt);
 
             switch (mainSelectionOption) {
                 case FILL_AND_SORT -> {
-
                     while (true) {
                         ConsoleIO.printFillOptions();
-                        int fillSelectionInt = ConsoleIO.checkIntInput(scanner, 1, 3);
+
+                        int fillSelectionInt = ConsoleIO.checkedIntInput(scanner, 1, 3);
+
                         FillSelectionOption fillSelectionOption = FillSelectionOption.fromInt(fillSelectionInt);
 
                         ConsoleIO.printFillSelection(fillSelectionOption);
@@ -49,14 +52,14 @@ class Main {
                             case RANDOM -> {
                                 System.out.print("\nВведите количество машин: ");
 
-                                int count = ConsoleIO.checkIntInput(scanner, 0, 10);
+                                int count = ConsoleIO.checkedIntInput(scanner, 1, 100000);
 
                                 RandomCarGenerator.fill(filledCars, count, false);
                             }
                             case MANUAL_INPUT -> {
-                                System.out.println("\nВведите количество машин:");
+                                System.out.print("\nВведите количество машин:");
 
-                                int count = ConsoleIO.checkIntInput(scanner, 0, 10);
+                                int count = ConsoleIO.checkedIntInput(scanner, 1, 10000);
 
                                 CarParser.readFromConsole(count, filledCars, false);
                             }
@@ -67,47 +70,61 @@ class Main {
                             }
                         }
 
-                        if (!filledCars.isEmpty()) {
-                            ConsoleIO.printCarList(filledCars, ConsoleIO.DEFAULT_PRINT_LIST_LIMIT);
-                            break;
-                        } else {
+                        if (filledCars.isEmpty()) {
                             System.out.println("Список пуст, попробуйте снова.");
+
+                            continue;
                         }
 
-                        ConsoleIO.printCarList(filledCars, ConsoleIO.DEFAULT_PRINT_LIST_LIMIT);
+                        ConsoleIO.printCarList(filledCars, ConsoleIO.printListLimit);
 
                         break;
                     }
 
-                    ConsoleIO.printSortingOptions();
+                    while (true) {
+                        ConsoleIO.printSortingOptions();
 
-                    int sortChoice = ConsoleIO.checkIntInput(scanner, 1, 4);
+                        int sortChoice = ConsoleIO.checkedIntInput(scanner, 1, 5);
 
-                    SortSelectionOption sortOption = SortSelectionOption.fromInt(sortChoice);
+                        SortSelectionOption sortOption = SortSelectionOption.fromInt(sortChoice);
 
-                    switch (sortOption) {
-                        case BY_MODEL -> CarSorter.sort(filledCars, new CarSorter.SortByField<>(Car::getModel));
-                        case BY_POWER -> CarSorter.sort(filledCars, new CarSorter.SortByField<>(Car::getPower));
-                        case BY_YEAR -> CarSorter.sort(filledCars, new CarSorter.SortByField<>(Car::getYear));
-                        case BY_ALL -> CarSorter.sort(filledCars, new CarSorter.SortByAllFields());
-                    };
+                        switch (sortOption) {
+                            case BY_MODEL -> CarSorter.sort(filledCars, new CarSorter.SortByField<>(Car::getModel));
+                            case BY_POWER -> CarSorter.sort(filledCars, new CarSorter.SortByField<>(Car::getPower));
+                            case BY_YEAR -> CarSorter.sort(filledCars, new CarSorter.SortByField<>(Car::getYear));
+                            case BY_ALL -> CarSorter.sort(filledCars, new CarSorter.SortByAllFields());
+                        };
 
-                    System.out.println("\nОтсортированный список:");
-                    ConsoleIO.printCarList(filledCars, ConsoleIO.DEFAULT_PRINT_LIST_LIMIT);
+                        if(sortOption == SortSelectionOption.EXIT)
+                        {
+                            break;
+                        }
 
+                        System.out.println("\nОтсортированный список:");
+                        ConsoleIO.printCarList(filledCars, ConsoleIO.printListLimit);
 
-                    //scanner.nextLine();
+                    }
+                }
+                case CHANGE_PRINT_LIMIT -> {
+                    ConsoleIO.changePrintLimit();
+                    continue;
                 }
                 case EXIT -> {
-                    ConsoleIO.printExit();
-
-                    scanner.close();
-
-                    return;
+                    break;
                 }
                 default -> System.out.println("Нет такого варианта");
 
             }
+
+            scanner.close();
+
+            ConsoleIO.printExit();
+
+            return;
+
         }
+
+
     }
+
 }

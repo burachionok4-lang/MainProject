@@ -11,6 +11,7 @@ public class Car {
     public static final double MIN_POWER = 1.0;
     public static final double MAX_POWER = 2000.0;
     public static final int MAX_MODEL_LENGTH = 100;
+
     private final String model;
     private final double power;
     private final int year;
@@ -20,6 +21,7 @@ public class Car {
         this.power = builder.power;
         this.year = builder.year;
     }
+
     public String getModel() {
         return model;
     }
@@ -46,7 +48,6 @@ public class Car {
         return Objects.equals(model,that.model)
                 && power == that.power
                 && year == that.year;
-
     }
 
     @Override
