@@ -17,9 +17,9 @@ public class ConsoleIO {
                 "=========================================");
 
         System.out.println("1. Заполнить массив и выполнить сортировку");
-        System.out.println("2. Выход из программы");
-
-        System.out.print("Выберите действие (1 или 2): ");
+        System.out.println("2. Показывать элементы: " + printListLimit);
+        System.out.println("3. Выход из программы");
+        //System.out.print("\n");
     }
 
     public static void printFillOptions() {
@@ -62,10 +62,14 @@ public class ConsoleIO {
             stream = stream.limit(limit);
         }
 
-        stream.forEach(System.out::println);
+        System.out.println("Модель  мощность  год");
 
-        if (carList.size() - 1 > limit) {
-            System.out.println("и еще " + (carList.size() - 1 - limit) + " элементов...");
+        stream.forEach((Car car) -> {
+            System.out.println(car.getModel() + ", " + car.getPower() + ", " + car.getYear());
+        });
+
+        if (carList.size() > limit) {
+            System.out.println("и еще " + (carList.size() - limit) + " элементов...");
         }
     }
 
@@ -75,37 +79,56 @@ public class ConsoleIO {
         System.out.println("2. Мощность");
         System.out.println("3. Год");
         System.out.println("4. По всем полям");
+        System.out.print("\n");
+        System.out.println("5. Выйти");
+
         System.out.print("Ваш выбор: ");
     }
 
+    public static void changePrintLimit(){
+        System.out.print("Новое значение: ");
 
-    public static void waitAnyInput()
-    {
-        scanner.nextLine();
+        ConsoleIO.printListLimit = ConsoleIO.checkedIntInput(scanner, 1, 100000);
     }
 
-    public static void scanNextInt()
-    {
-        int mainSelectionInt = scanner.nextInt();
-
-
-        scanner.nextLine();
-    }
-
-    public static int checkIntInput(Scanner scanner, int min, int max)
+    public static int checkedIntInput(Scanner scanner, int min, int max)
    {
        while (true) {
            String line = scanner.nextLine().trim();
+
            try {
                int value = Integer.parseInt(line);
+
                if (value < min || value > max) {
                    System.out.printf("Ошибка: число должно быть в диапазоне [%d, %d].%n", min, max);
+
                    continue;
                }
+
                return value;
            } catch (NumberFormatException e) {
                System.out.println("Ошибка: введите целое число.");
            }
        }
    }
+
+    public static double checkedDoubleInput(Scanner scanner, double min, double max)
+    {
+        while (true) {
+            String line = scanner.nextLine().trim();
+            try {
+                double value = Double.parseDouble(line);
+
+                if (value < min || value > max) {
+                    System.out.printf("Ошибка: число должно быть в диапазоне [%f, %f].%n", min, max);
+
+                    continue;
+                }
+
+                return value;
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите число с плавающей точкой.");
+            }
+        }
+    }
 }

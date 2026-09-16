@@ -4,7 +4,8 @@ public enum SortSelectionOption {
     BY_MODEL(1),
     BY_POWER(2),
     BY_YEAR(3),
-    BY_ALL(4);
+    BY_ALL(4),
+    EXIT(5);
 
     private final int code;
 

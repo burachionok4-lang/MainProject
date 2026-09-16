@@ -12,18 +12,25 @@ public final class RandomCarGenerator {
             "Kia Rio", "Skoda Octavia", "Mazda CX-5", "Subaru Outback",
             "Volvo XC90", "Lexus RX", "Porsche 911", "Jaguar F-Type"
     };
+
     private static final Random RANDOM = new Random();
+
     private RandomCarGenerator() {}
+
     public static Car generate(){
+
         return new Car.Builder()
                 .setModel(MODELS[RANDOM.nextInt(MODELS.length)])
                 .setYear(Car.MIN_YEAR+RANDOM.nextInt(Car.MAX_YEAR-Car.MIN_YEAR+1))
                 .setPower(Car.MIN_POWER+RANDOM.nextDouble()*(Car.MAX_POWER-Car.MIN_POWER))
                 .build();
     }
+
     public static void fill(List<Car> dest, int count, boolean clearDest) {
         if (count < 0) throw new IllegalArgumentException("count < 0");
+
         if (clearDest) dest.clear();
+
         //Попытка в стрим
         Stream.generate(RandomCarGenerator::generate)
                 .limit(count)

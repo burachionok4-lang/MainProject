@@ -48,24 +48,33 @@ public class CarParser {
 
         for (int i = 0; i < count; i++) {
             System.out.println("\n--- Машина №" + (i + 1) + " ---");
-            String model;
+
+            Car.Builder carBuilder = new Car.Builder();
+
             while (true) {
                 System.out.print("Модель: ");
-                model = scanner.nextLine().trim();
+
                 try {
-                    new Car.Builder().setModel(model);
+                    String model = scanner.nextLine().trim();
+
+                    carBuilder.setModel(model);
+
                     break;
                 } catch (IllegalArgumentException e) {
                     System.out.println("Ошибка: " + e.getMessage());
                 }
             }
-            double power;
+
             while (true) {
                 System.out.print("Мощность (л.с.): ");
+
                 String line = scanner.nextLine().trim().replace(',', '.');
+
                 try {
-                    power = Double.parseDouble(line);
-                    new Car.Builder().setPower(power);
+                    double power = Double.parseDouble(line);
+
+                    carBuilder.setPower(power);
+
                     break;
                 } catch (NumberFormatException e) {
                     System.out.println("Ошибка: введите число (например, 150 или 150.5).");
@@ -74,13 +83,16 @@ public class CarParser {
                 }
             }
 
-            int year;
             while (true) {
                 System.out.print("Год выпуска: ");
+
                 String line = scanner.nextLine().trim();
+
                 try {
-                    year = Integer.parseInt(line);
-                    new Car.Builder().setYear(year);
+                    int year = Integer.parseInt(line);
+
+                    carBuilder.setYear(year);
+
                     break;
                 } catch (NumberFormatException e) {
                     System.out.println("Ошибка: введите целое число (например, 2020).");
@@ -88,12 +100,9 @@ public class CarParser {
                     System.out.println("Ошибка: " + e.getMessage());
                 }
             }
-                Car car = new Car.Builder()
-                        .setModel(model)
-                        .setPower(power)
-                        .setYear(year)
-                        .build();
-                dest.add(car);
+
+            dest.add(carBuilder.build());
+
             System.out.println("Машина добавлена!");
         }
     }

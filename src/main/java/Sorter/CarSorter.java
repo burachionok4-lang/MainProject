@@ -36,17 +36,15 @@ public class CarSorter {
 
     //Strategy 2
     public static class SortByAllFields implements Comparator<Car> {
+
+        private static final Comparator<Car> ALL_FIELDS_COMPARATOR = Comparator
+                .comparing(Car::getModel)
+                .thenComparingDouble(Car::getPower)
+                .thenComparingInt(Car::getYear);
+
         @Override
         public int compare(Car o1, Car o2) {
-            Comparator<Car> carComparator = Comparator
-                    .comparing(Car::getModel)
-                    .thenComparingDouble(Car::getPower)
-                    .thenComparingInt(Car::getYear);
-
-            //carComparator(o1)
-
-            //TODO
-            return 0;
+            return ALL_FIELDS_COMPARATOR.compare(o1, o2);
         }
 
     }

@@ -3,7 +3,8 @@ package IO;
 public enum MainSelectionOption {
     NONE(0),
     FILL_AND_SORT(1),
-    EXIT(2);
+    CHANGE_PRINT_LIMIT(2),
+    EXIT(3);
 
     private final int code;
 
