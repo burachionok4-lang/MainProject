@@ -1,57 +1,57 @@
 [ {
   "model" : "Aaaa",
-  "power" : 1000.0,
+  "power" : 100.0,
   "year" : 1986
 }, {
   "model" : "Car Says Meow",
-  "power" : 1501.0,
+  "power" : 150.1,
   "year" : 2001
 }, {
   "model" : "Car That is 3rd",
-  "power" : 3333.0,
+  "power" : 333.3,
   "year" : 2003
 }, {
   "model" : "Car That is 4th",
-  "power" : 4444.0,
+  "power" : 444.4,
   "year" : 2004
 }, {
   "model" : "Toyota Corolla",
-  "power" : 1255.0,
+  "power" : 125.5,
   "year" : 2002
 }, {
   "model" : "Ford Focus",
-  "power" : 1255.0,
+  "power" : 125.5,
   "year" : 1981
 }, {
   "model" : "Ford Escort",
-  "power" : 1330.0,
+  "power" : 133.0,
   "year" : 1980
 }, {
   "model" : "Ford Escort Mk2",
-  "power" : 1450.0,
+  "power" : 145.0,
   "year" : 1980
 }, {
   "model" : "Lada Largus",
-  "power" : 1220.0,
+  "power" : 122.0,
   "year" : 1999
 }, {
   "model" : "Volvo XC90",
-  "power" : 1490.0,
+  "power" : 149.0,
   "year" : 2015
 }, {
   "model" : "Lada Kalina",
-  "power" : 980.0,
+  "power" : 98.0,
   "year" : 2004
 }, {
   "model" : "Honda Accord",
-  "power" : 1100.0,
+  "power" : 110.0,
   "year" : 2001
 }, {
   "model" : "Lada Vesta",
-  "power" : 990.0,
+  "power" : 99.0,
   "year" : 2015
 }, {
   "model" : "Car Has Very Very Long Name",
-  "power" : 9990.0,
+  "power" : 999.0,
   "year" : 2025
 } ]
