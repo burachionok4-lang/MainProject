@@ -53,7 +53,6 @@ public class CarParserTest {
             System.err.println(e.getMessage());
         }
 
-
         assertEquals(writeCarList, readCarList);
     }
 }

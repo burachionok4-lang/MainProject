@@ -3,6 +3,7 @@ package Car;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +22,22 @@ class CarParserJsonTest {
         written.add(Car.of("Toyota", 150.0, 2010));
         written.add(Car.of("BMW", 300.0, 2020));
 
-        CarParser.writeJSON(file, written);
+        try {
+            CarParser.writeJSON(file, written);
+        }
+        catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
 
         List<Car> read = new ArrayList<>();
-        CarParser.readJSON(file, read, true);
+
+        try {
+            CarParser.readJSON(file, read, true);
+        }
+        catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
 
         assertEquals(written, read);
     }
@@ -34,11 +47,23 @@ class CarParserJsonTest {
         Path file = tempDir.resolve("cars.json");
         List<Car> written = new ArrayList<>();
         written.add(Car.of("Toyota", 150.0, 2010));
-        CarParser.writeJSON(file, written);
+
+        try {
+            CarParser.writeJSON(file, written);
+        }
+        catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
 
         List<Car> destination = new ArrayList<>();
         destination.add(Car.of("Audi", 300.0, 2005));
-        CarParser.readJSON(file, destination, false);
+
+        try {
+            CarParser.readJSON(file, destination, false);
+        }
+        catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
 
         assertEquals(2, destination.size());
         assertEquals("Audi", destination.get(0).getModel());
@@ -50,6 +75,6 @@ class CarParserJsonTest {
         Path missing = tempDir.resolve("no-such-file.json");
         List<Car> destination = new ArrayList<>();
 
-        assertThrows(RuntimeException.class, () -> CarParser.readJSON(missing, destination, false));
+        assertThrows(IOException.class, () -> CarParser.readJSON(missing, destination, false));
     }
 }
