@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -35,11 +36,23 @@ public class CarParserTest {
                 of("Car Has Very Very Long Name",999.0,  2025));
 
 
-        CarParser.writeJSON(path, writeCarList);
+
+        try {
+            CarParser.writeJSON(path, writeCarList);
+        }
+        catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
 
         List<Car> readCarList = new ArrayList<Car>();
 
-        CarParser.readJSON(path, readCarList, true);
+        try {
+            CarParser.readJSON(path, readCarList, true);
+        }
+        catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
 
         assertEquals(writeCarList, readCarList);
     }

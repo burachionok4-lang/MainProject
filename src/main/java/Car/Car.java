@@ -7,10 +7,10 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 @JsonDeserialize(builder = Car.Builder.class)
 public class Car {
     public static final int MIN_YEAR = 1886;
-    public static final int MAX_YEAR = java.time.Year.now().getValue() + 1;
-    public static final double MIN_POWER = 1.0;
-    public static final double MAX_POWER = 2000.0;
-    public static final int MAX_MODEL_LENGTH = 100;
+    public static final int MAX_YEAR = java.time.Year.now().getValue() + 20;
+    public static final double MIN_POWER = 0.1;
+    public static final double MAX_POWER = 10000.0;
+    public static final int MAX_MODEL_LENGTH = 150;
 
     private final String model;
     private final double power;

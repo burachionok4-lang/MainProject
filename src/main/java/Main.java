@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
@@ -49,9 +50,21 @@ class Main {
                                 CarParser.readFromConsole(count, filledCars, false);
                             }
                             case FROM_FILE -> {
-                                String filePath = scanner.nextLine();
+                                while (true) {
+                                    String filePath = scanner.nextLine();
 
-                                CarParser.readJSON(Paths.get(filePath), filledCars, false);
+                                    try {
+                                        CarParser.readJSON(Paths.get(filePath), filledCars, false);
+                                    }
+                                    catch (IOException e) {
+                                        System.out.println(e.getMessage());
+                                        System.out.print("Ведите название файла заново: ");
+
+                                        continue;
+                                    }
+
+                                    break;
+                                }
                             }
                         }
 
