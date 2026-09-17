@@ -3,6 +3,7 @@ package IO;
 import Car.Car;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConsoleIO {
     static public final int DEFAULT_PRINT_LIST_LIMIT = 10;
@@ -23,10 +24,10 @@ public class ConsoleIO {
     }
 
     public static void printFillOptions() {
-        System.out.println("\n--- Выберите способ заполнения массива ---");
+        System.out.println("\n--- Выберите способ заполнения списка ---");
 
         System.out.println("1. Случайная генерация (рандом)");
-        System.out.println("2. Ручной ввод с клавиатуры");
+        System.out.println("2. Ручной ввод");
         System.out.println("3. Загрузка из .json файла");
 
         System.out.print("Ваш выбор: ");
@@ -42,7 +43,7 @@ public class ConsoleIO {
                 System.out.println("Случайное заполнение");
             }
             case MANUAL_INPUT -> {
-                System.out.println("Ручной ввод данных:");
+                System.out.println("Ручной ввод:");
             }
             case FROM_FILE -> {
                 System.out.print("Введите путь к файлу (напр. test.json): ");
@@ -62,10 +63,12 @@ public class ConsoleIO {
             stream = stream.limit(limit);
         }
 
-        System.out.println("Модель  мощность  год");
+        System.out.println("  Модель  Мощность  Год");
+
+        AtomicInteger counter = new AtomicInteger(1);
 
         stream.forEach((Car car) -> {
-            System.out.println(car.getModel() + ", " + car.getPower() + ", " + car.getYear());
+            System.out.println(counter.getAndIncrement() + ". " + car.getModel() + ", " + car.getPower() + ", " + car.getYear());
         });
 
         if (carList.size() > limit) {

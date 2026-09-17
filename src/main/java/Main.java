@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Scanner;
 
 import Car.*;
@@ -43,7 +42,7 @@ class Main {
                                 RandomCarGenerator.fill(filledCars, count, false);
                             }
                             case MANUAL_INPUT -> {
-                                System.out.print("\nВведите количество машин:");
+                                System.out.print("\nВведите количество машин: ");
 
                                 int count = ConsoleIO.checkedIntInput(scanner, 1, 10000);
 
