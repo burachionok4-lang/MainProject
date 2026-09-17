@@ -1,6 +1,8 @@
-package Test;
+package Car;
 
-import Car.Car;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -8,16 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Car.Car.of;
-import Car.CarParser;
 
 public class CarParserTest {
     //Test is combined because it's difficult to separately test each method
-    public static boolean writeReadJSON()
+    @Test
+    public void writeReadJSONTest()
     {
         Path path = Paths.get("test.json");
 
         List<Car> writeCarList = List.of(
-                of("A", 100, 1986),
+                of("Aaaa", 100, 1986),
                 of("Car Says Meow",150.1,2001),
                 of("Car That is 3rd",333.3,  2003),
                 of("Car That is 4th",444.4,  2004),
@@ -39,6 +41,6 @@ public class CarParserTest {
 
         CarParser.readJSON(path, readCarList, true);
 
-        return writeCarList.equals(readCarList);
+        assertEquals(writeCarList, readCarList);
     }
 }
