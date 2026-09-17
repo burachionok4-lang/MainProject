@@ -1,5 +1,6 @@
 package Car;
 
+import Collection.CustomArrayList;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class CarParser {
     public static void writeJSON(Path pathDestination, List<Car> fromList) {
@@ -26,7 +28,7 @@ public class CarParser {
         try {
             ObjectMapper mapper = new ObjectMapper();
 
-            List<Car> loaded = mapper.readValue(pathFrom.toFile(), new TypeReference<List<Car>>() {});
+            CustomArrayList<Car> loaded = mapper.readValue(pathFrom.toFile(), new TypeReference<CustomArrayList<Car>>() {});
 
             if (clearDest) {
                 dest.clear();
