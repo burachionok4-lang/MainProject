@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class CarParser {
-    public static void writeJSON(Path pathDestination, List<Car> fromList) {
+    public static void writeJSON(Path pathDestination, List<Car> fromList) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -20,14 +20,14 @@ public class CarParser {
         try {
             mapper.writeValue(pathDestination.toFile(), fromList);
         } catch (IOException e) {
-            throw new RuntimeException("Couldn't write JSON to " + pathDestination.toString() + "\n" + e.getMessage(), e);
+            throw new IOException("Couldn't write JSON to " + pathDestination.toString() + "\n" + e.getMessage(), e);
         }
     }
 
-    public static void readJSON(Path pathFrom, List<Car> dest, boolean clearDest) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
+    public static void readJSON(Path pathFrom, List<Car> dest, boolean clearDest) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
 
+        try {
             CustomArrayList<Car> loaded = mapper.readValue(pathFrom.toFile(), new TypeReference<CustomArrayList<Car>>() {});
 
             if (clearDest) {
@@ -36,9 +36,11 @@ public class CarParser {
 
             dest.addAll(loaded);
 
-        } catch (IOException e) {
-            throw new RuntimeException("Couldn't read JSON from " + pathFrom.toString() + "\n" + e.getMessage(), e);
         }
+        catch (IOException e) {
+            throw new IOException(e.getMessage(), e);
+        }
+
     }
 
     public static void readFromConsole(int count, List<Car> dest, boolean clearDest) {
