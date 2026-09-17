@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 public class Car {
     public static final int MIN_YEAR = 1886;
     public static final int MAX_YEAR = java.time.Year.now().getValue() + 1;
-    public static final double MIN_POWER = 1.0;
+    public static final double MIN_POWER = 10.0;
     public static final double MAX_POWER = 2000.0;
     public static final int MAX_MODEL_LENGTH = 100;
 
@@ -98,7 +98,7 @@ public class Car {
                 throw new IllegalArgumentException(
                         "Мощность должна быть в диапазоне [" + MIN_POWER + ", " + MAX_POWER + "], получено: " + power);
             }
-            this.power = Math.round(power * 100.0) / 100.0;
+            this.power = Math.round(power * 10.0) / 10.0;
             return this;
         }
 
